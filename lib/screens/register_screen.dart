@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({
     super.key,
   });
 
@@ -28,7 +28,7 @@ class LoginScreen extends StatelessWidget {
                         width: 125,
                       ),
                       const Text(
-                        "Inicio de Sesión",
+                        "Registrarse",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
@@ -38,6 +38,17 @@ class LoginScreen extends StatelessWidget {
                 Container(
                   child: Column(
                     children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Nombre completo",
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: TextField(
@@ -59,6 +70,18 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(
+                        height: 20,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: TextField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            labelText: "Confirmar Contraseña",
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
                         height: 50,
                       ),
                       Container(
@@ -70,9 +93,11 @@ class LoginScreen extends StatelessWidget {
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.all(15),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                           child: const Text(
-                            "Iniciar Sesión",
+                            "Crear Cuenta",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.bold),
                           ),
@@ -92,12 +117,12 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                         width: 20,
                       ),
-                      const Text("¿No tienes una cuenta?"),
+                      const Text("¿Ya tienes una cuenta?"),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/register");
+                          Navigator.pop(context);
                         },
-                        child: const Text("Regístrate"),
+                        child: const Text("Inicia sesión"),
                       )
                     ],
                   ),
