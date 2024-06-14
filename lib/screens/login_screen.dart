@@ -1,12 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:tufinance/data/logged_data.dart';
+import 'package:tufinance/services/login_service.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({
     super.key,
   });
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  bool _checkingForData = true;
+
+  bool _isLoading = false;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData().then((user) {
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        setState(() {
+          _checkingForData = false;
+        });
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_checkingForData) {
+      return const Scaffold(
+        body: Center(
+          child: SizedBox(
+            height: 40,
+            width: 40,
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -20,66 +63,132 @@ class LoginScreen extends StatelessWidget {
                   height: 10,
                   width: double.infinity,
                 ),
-                Container(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        "assets/images/logo.jpg",
-                        width: 125,
-                      ),
-                      const Text(
-                        "Inicio de Sesión",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
+                Column(
+                  children: [
+                    Image.asset(
+                      "assets/images/logo.jpg",
+                      width: 125,
+                    ),
+                    const Text(
+                      "Inicio de Sesión",
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-                Container(
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: "Correo Electrónico",
-                          ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                        controller: email,
+                        onChanged: (value) {
+                          setState(() {
+                            _error = null;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          labelText: "Correo Electrónico",
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: TextField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: "Contraseña",
-                          ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                        controller: password,
+                        onChanged: (value) {
+                          setState(() {
+                            _error = null;
+                          });
+                        },
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: "Contraseña",
                         ),
                       ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      Container(
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    if (_error != null)
+                      Padding(
                         padding: const EdgeInsets.all(20),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.all(15),
-                          ),
-                          onPressed: () {},
-                          child: const Text(
-                            "Iniciar Sesión",
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                          ),
+                        child: Text(
+                          _error!,
+                          style: const TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ],
-                  ),
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.all(15),
+                        ),
+                        onPressed: _isLoading
+                            ? null
+                            : () async {
+                                if (email.text.isEmpty ||
+                                    password.text.isEmpty) {
+                                  setState(() {
+                                    _error = "Todos los campos son requeridos";
+                                  });
+                                  return;
+                                }
+
+                                if (email.text.contains('@') == false) {
+                                  setState(() {
+                                    _error = "Correo electrónico inválido";
+                                  });
+                                  return;
+                                }
+
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                final responseLogin = await loginService(
+                                    email.text, password.text);
+
+                                if (responseLogin == null) {
+                                  setState(() {
+                                    _isLoading = false;
+                                    _error = "Correo o contraseña incorrectos";
+                                  });
+                                  return;
+                                }
+
+                                await setUserData(responseLogin).then((value) {
+                                  setState(() {
+                                    _isLoading = false;
+                                    Navigator.pushReplacementNamed(
+                                        context, '/home');
+                                  });
+                                });
+                              },
+                        child: _isLoading
+                            ? const SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
+                                ),
+                              )
+                            : const Text(
+                                "Iniciar Sesión",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: 20,
