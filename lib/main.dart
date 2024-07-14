@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tufinance/providers/login_provider.dart';
+import 'package:tufinance/screens/add/add_gasto.dart';
+import 'package:tufinance/screens/add/add_ingreso.dart';
+import 'package:tufinance/screens/add/select_add.dart';
 import 'package:tufinance/screens/home_screen.dart';
 import 'package:tufinance/screens/login_screen.dart';
 import 'package:tufinance/screens/register_screen.dart';
@@ -30,7 +33,10 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginScreen(),
           '/register': (context) => const RegisterScreen(),
           '/home': (context) => const HomeScreen(),
-          '/welcome': (context) => const WelcomeRegisterScreen()
+          '/welcome': (context) => const WelcomeRegisterScreen(),
+          '/selectAdd': (context) => const SelectAdd(),
+          '/addGasto': (context) => const AddGasto(),
+          '/addIngreso': (context) => const AddIngreso(),
         });
   }
 }

@@ -172,12 +172,12 @@ class CardCategories extends StatelessWidget {
                       ),
                     ),
                     child: const Icon(
-                      Icons.home,
+                      Icons.travel_explore,
                       color: Colors.teal,
                     ),
                   ),
                   title: const Text(
-                    "Educación",
+                    "Viajes",
                     style: TextStyle(color: Colors.grey),
                   ),
                   trailing: const Text(

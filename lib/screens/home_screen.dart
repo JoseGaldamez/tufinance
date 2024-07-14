@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tufinance/data/logged_data.dart';
 import 'package:tufinance/providers/login_provider.dart';
-import 'package:tufinance/screens/init_screen.dart';
-import 'package:tufinance/screens/setting_screen.dart';
-import 'package:tufinance/screens/tips_screen.dart';
+import 'package:tufinance/screens/home/index.dart';
 
 // pantalla de home para una app de tipo finanzas personales
 
@@ -80,13 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: _currentIndex == 0
           ? FloatingActionButton(
-              onPressed: () {
+              onPressed: () async {
                 // Show snack bar
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Agregando transacción (pendiente)"),
-                  ),
-                );
+                await Navigator.pushNamed(context, "/selectAdd");
+                // TODO: Refresh page
               },
               backgroundColor: Colors.blue,
               child: const Icon(
