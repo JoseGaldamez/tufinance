@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:tufinance/data/logged_data.dart';
 import 'package:tufinance/providers/login_provider.dart';
+import 'package:tufinance/providers/theme_provider.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({super.key});
@@ -14,7 +16,13 @@ class _SettingScreenState extends State<SettingScreen> {
   bool _darkMode = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _darkMode = context.read<ThemeProvider>().isDark;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,7 +32,6 @@ class _SettingScreenState extends State<SettingScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
-              color: Colors.white,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
@@ -46,10 +53,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 const SizedBox(height: 10),
                 Text(
                   context.watch<LoginProvider>().userName,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
                   ),
                 ),
                 Text(
@@ -77,40 +83,45 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
                 const Divider(),
 
-                const ListTile(
-                  leading: Icon(
-                    Icons.password,
-                    color: Colors.grey,
-                  ),
-                  title: Text("Cambiar contraseña"),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.grey,
-                  ),
-                ),
-                const ListTile(
-                  leading: Icon(
-                    Icons.info,
-                    color: Colors.grey,
-                  ),
-                  title: Text("Información personal"),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.grey,
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/changePassword");
+                  },
+                  child: const ListTile(
+                    leading: Icon(
+                      Icons.password,
+                      color: Colors.grey,
+                    ),
+                    title: Text("Cambiar contraseña"),
+                    trailing: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
+                // const ListTile(
+                //   leading: Icon(
+                //     Icons.info,
+                //     color: Colors.grey,
+                //   ),
+                //   title: Text("Información personal"),
+                //   trailing: Icon(
+                //     Icons.arrow_forward_ios,
+                //     color: Colors.grey,
+                //   ),
+                // ),
 
-                const ListTile(
-                  leading: Icon(
-                    Icons.language,
-                    color: Colors.grey,
-                  ),
-                  title: Text("Idioma"),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.grey,
-                  ),
-                ),
+                // const ListTile(
+                //   leading: Icon(
+                //     Icons.language,
+                //     color: Colors.grey,
+                //   ),
+                //   title: Text("Idioma"),
+                //   trailing: Icon(
+                //     Icons.arrow_forward_ios,
+                //     color: Colors.grey,
+                //   ),
+                // ),
 
                 const SizedBox(height: 20),
                 const Text(
@@ -134,6 +145,10 @@ class _SettingScreenState extends State<SettingScreen> {
                       setState(() {
                         _darkMode = newValue;
                       });
+
+                      context.read<ThemeProvider>().setIsDark(newValue);
+                      setDarkMode(newValue);
+
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: newValue
@@ -145,26 +160,26 @@ class _SettingScreenState extends State<SettingScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
-                const Text(
-                  "Notificaciones",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey),
-                ),
-                const Divider(),
-                const ListTile(
-                  leading: Icon(
-                    Icons.notifications,
-                    color: Colors.grey,
-                  ),
-                  title: Text("Notificaciones"),
-                  trailing: Icon(
-                    Icons.arrow_forward_ios,
-                    color: Colors.grey,
-                  ),
-                ),
+                // const SizedBox(height: 20),
+                // const Text(
+                //   "Notificaciones",
+                //   style: TextStyle(
+                //       fontSize: 16,
+                //       fontWeight: FontWeight.bold,
+                //       color: Colors.grey),
+                // ),
+                // const Divider(),
+                // const ListTile(
+                //   leading: Icon(
+                //     Icons.notifications,
+                //     color: Colors.grey,
+                //   ),
+                //   title: Text("Notificaciones"),
+                //   trailing: Icon(
+                //     Icons.arrow_forward_ios,
+                //     color: Colors.grey,
+                //   ),
+                // ),
 
                 // Setting S
               ],

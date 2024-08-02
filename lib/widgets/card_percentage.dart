@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tufinance/providers/finance_provider.dart';
 
 class BarPercentage extends StatelessWidget {
   const BarPercentage({super.key});
+
+  double getFranction(double ingreso, double egreso) {
+    if (ingreso == 0) {
+      return 0;
+    }
+
+    double fraction = (egreso / ingreso);
+    return fraction;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,10 +21,10 @@ class BarPercentage extends StatelessWidget {
       child: Column(
         children: [
           // Text
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Presupuesto gastado",
                 style: TextStyle(
                     fontSize: 14,
@@ -21,8 +32,8 @@ class BarPercentage extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "70%",
-                style: TextStyle(
+                "${(getFranction(context.watch<FinanceProvider>().totalActivos, context.watch<FinanceProvider>().totalPasivos) * 100).toStringAsFixed(0)} %",
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
@@ -44,12 +55,19 @@ class BarPercentage extends StatelessWidget {
               ),
             ),
             child: FractionallySizedBox(
-              widthFactor: 0.7,
+              widthFactor: getFranction(
+                  context.watch<FinanceProvider>().totalActivos,
+                  context.watch<FinanceProvider>().totalPasivos),
               alignment: Alignment.centerLeft,
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.all(
+                decoration: BoxDecoration(
+                  color: (getFranction(
+                              context.watch<FinanceProvider>().totalActivos,
+                              context.watch<FinanceProvider>().totalPasivos) >
+                          0.8)
+                      ? Colors.red
+                      : Colors.green,
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(20),
                   ),
                 ),
@@ -60,10 +78,10 @@ class BarPercentage extends StatelessWidget {
           const SizedBox(height: 10),
 
           // Text
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Presupuesto restante",
                 style: TextStyle(
                     fontSize: 14,
@@ -71,8 +89,8 @@ class BarPercentage extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "30%",
-                style: TextStyle(
+                "${(((getFranction(context.watch<FinanceProvider>().totalActivos, context.watch<FinanceProvider>().totalPasivos) * 100) - 100) * (-1)).toStringAsFixed(0)} %",
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey,
@@ -83,43 +101,42 @@ class BarPercentage extends StatelessWidget {
 
           const SizedBox(height: 30),
 
-          Container(
-            padding: const EdgeInsets.all(15),
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text(
-                  "Te avisaremos cuando hayas llegado a un 80% de tu límite. Para que puedas ajustar tus gastos.",
-                  style: TextStyle(color: Colors.grey, fontSize: 12),
-                ),
-                TextButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Configuración (pendiente)"),
-                        ),
-                      );
-                    },
-                    child: const Text(
-                      "Configurar notificación",
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
-                    )),
-              ],
-            ),
-          ),
-          const SizedBox(height: 10),
+          (getFranction(context.watch<FinanceProvider>().totalActivos,
+                      context.watch<FinanceProvider>().totalPasivos) >
+                  0.8)
+              ? Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.red[100],
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "Advertencia",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "Le recomendamos regular sus gastos ya que está muy cerca de superar su presupuesto para este mes.",
+                        style: TextStyle(color: Colors.red, fontSize: 12),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

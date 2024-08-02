@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:tufinance/providers/finance_provider.dart';
 
 class CardCategories extends StatelessWidget {
   const CardCategories({super.key});
@@ -20,19 +21,10 @@ class CardCategories extends StatelessWidget {
           const SizedBox(height: 15),
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.all(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
                 Radius.circular(20),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 10,
-                  offset: const Offset(0, 3),
-                ),
-              ],
             ),
             child: Column(
               children: [
@@ -55,9 +47,9 @@ class CardCategories extends StatelessWidget {
                     "Compras",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  trailing: const Text(
-                    "\$1,000.00",
-                    style: TextStyle(color: Colors.grey),
+                  trailing: Text(
+                    "\$${context.watch<FinanceProvider>().totalCompras.toStringAsFixed(2)}",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 const Divider(),
@@ -80,9 +72,9 @@ class CardCategories extends StatelessWidget {
                     "Comida",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  trailing: const Text(
-                    "\$2,000.00",
-                    style: TextStyle(color: Colors.grey),
+                  trailing: Text(
+                    "\$${context.watch<FinanceProvider>().totalComida.toStringAsFixed(2)}",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 const Divider(),
@@ -105,9 +97,9 @@ class CardCategories extends StatelessWidget {
                     "Gasolina",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  trailing: const Text(
-                    "\$500.00",
-                    style: TextStyle(color: Colors.grey),
+                  trailing: Text(
+                    "\$${context.watch<FinanceProvider>().totalCarro.toStringAsFixed(2)}",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 const Divider(),
@@ -130,9 +122,9 @@ class CardCategories extends StatelessWidget {
                     "Casa",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  trailing: const Text(
-                    "\$1,500.00",
-                    style: TextStyle(color: Colors.grey),
+                  trailing: Text(
+                    "\$${context.watch<FinanceProvider>().totalCasa.toStringAsFixed(2)}",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 const Divider(),
@@ -155,9 +147,9 @@ class CardCategories extends StatelessWidget {
                     "Mascota",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  trailing: const Text(
-                    "\$1,000.00",
-                    style: TextStyle(color: Colors.grey),
+                  trailing: Text(
+                    "\$${context.watch<FinanceProvider>().totalMascotas.toStringAsFixed(2)}",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
                 const Divider(),
@@ -180,9 +172,9 @@ class CardCategories extends StatelessWidget {
                     "Viajes",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  trailing: const Text(
-                    "\$3,500.00",
-                    style: TextStyle(color: Colors.grey),
+                  trailing: Text(
+                    "\$${context.watch<FinanceProvider>().totalViajes.toStringAsFixed(2)}",
+                    style: const TextStyle(color: Colors.grey),
                   ),
                 ),
               ],

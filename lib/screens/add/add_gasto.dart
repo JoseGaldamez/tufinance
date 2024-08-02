@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:tufinance/models/move_model.dart';
+import 'package:tufinance/providers/finance_provider.dart';
+import 'package:tufinance/providers/login_provider.dart';
 import 'package:tufinance/screens/add/card_categories_gastos.dart';
+import 'package:tufinance/services/moves_service.dart';
 
 class AddGasto extends StatefulWidget {
   const AddGasto({super.key});
@@ -54,15 +59,37 @@ class _AddGastoState extends State<AddGasto> {
                       onPressed: (categorySelected == "" ||
                               textEditingControllerValue.text == "")
                           ? null
-                          : () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Gasto agregado"),
-                                ),
-                              );
+                          : () async {
+                              final move = MoveModel(
+                                  category: categorySelected,
+                                  amount: textEditingControllerValue.text,
+                                  type: "pasive");
 
-                              Navigator.of(context)
-                                  .popUntil((route) => route.isFirst);
+                              addMoveService(move,
+                                      context.read<LoginProvider>().userEmail)
+                                  .then((response) {
+                                if (response) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Gasto agregado"),
+                                    ),
+                                  );
+
+                                  context
+                                      .read<FinanceProvider>()
+                                      .addPasivos(move);
+
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "Algo salió mal, no se guardó el gasto."),
+                                    ),
+                                  );
+                                }
+                              });
                             },
                       child: const Text("Guardar Gasto")))
             ],

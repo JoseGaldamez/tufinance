@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tufinance/providers/finance_provider.dart';
 
 class HeaderHome extends StatelessWidget {
   const HeaderHome({super.key});
@@ -19,9 +21,9 @@ class HeaderHome extends StatelessWidget {
                 Radius.circular(20),
               ),
             ),
-            child: const Column(
+            child: Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(
                     children: [
@@ -41,8 +43,8 @@ class HeaderHome extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$27,000.00",
-                  style: TextStyle(
+                  "\$${context.watch<FinanceProvider>().totalActivos.toStringAsFixed(2)}",
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: Colors.green,
@@ -63,9 +65,9 @@ class HeaderHome extends StatelessWidget {
                 Radius.circular(20),
               ),
             ),
-            child: const Column(
+            child: Column(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(
                     children: [
@@ -85,8 +87,8 @@ class HeaderHome extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$18,820.00",
-                  style: TextStyle(
+                  "\$${context.watch<FinanceProvider>().totalPasivos.toStringAsFixed(2)}",
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: Colors.red,

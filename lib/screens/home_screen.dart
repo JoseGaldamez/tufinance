@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tufinance/data/logged_data.dart';
+import 'package:tufinance/providers/finance_provider.dart';
 import 'package:tufinance/providers/login_provider.dart';
 import 'package:tufinance/screens/home/index.dart';
 
@@ -39,9 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         title: Row(
           children: [
@@ -70,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () async {
               await removeUserData().then((value) {
                 context.read<LoginProvider>().removeUserLogged();
+                context.read<FinanceProvider>().resetValues();
                 Navigator.pushReplacementNamed(context, '/login');
               });
             },

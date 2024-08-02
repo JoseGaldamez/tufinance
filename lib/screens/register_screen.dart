@@ -176,7 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     UserModel(
                                         name: name.text,
                                         email: email.text,
-                                        password: password.text));
+                                        password: password.text,
+                                        moves: null));
 
                                 if (!responseRegister) {
                                   setState(() {

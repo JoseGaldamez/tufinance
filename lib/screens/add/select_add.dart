@@ -21,7 +21,7 @@ class _SelectAddState extends State<SelectAdd> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
-              const Text("Elige qué agregar"),
+              const Text("Elige que agregar"),
               const SizedBox(
                 height: 24,
               ),

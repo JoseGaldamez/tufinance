@@ -32,19 +32,10 @@ class _CardCategoriesGastosState extends State<CardCategoriesGastos> {
           const SizedBox(height: 15),
           Container(
             padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.all(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(
                 Radius.circular(20),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 10,
-                  offset: const Offset(0, 3),
-                ),
-              ],
             ),
             child: GridView(
               physics: const NeverScrollableScrollPhysics(),

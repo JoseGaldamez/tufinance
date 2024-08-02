@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tufinance/data/logged_data.dart';
+import 'package:tufinance/models/move_model.dart';
+import 'package:tufinance/providers/finance_provider.dart';
+import 'package:tufinance/providers/theme_provider.dart';
 import 'package:tufinance/services/login_service.dart';
+import 'package:tufinance/services/moves_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({
@@ -25,12 +30,44 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     getUserData().then((user) {
       if (user != null) {
-        Navigator.pushReplacementNamed(context, '/home');
+        getUserInformation(context, user.email);
       } else {
         setState(() {
           _checkingForData = false;
         });
       }
+    });
+  }
+
+  List<MoveModel> extractMoves(dynamic listOfMoves) {
+    List<MoveModel> moves = [];
+    if (listOfMoves != null) {
+      listOfMoves.values
+          .forEach((valueMove) => moves.add(MoveModel.fromJson(valueMove)));
+    }
+    return moves;
+  }
+
+  Future<void> getUserInformation(BuildContext context, String email) async {
+    getDarkMode().then((response) {
+      context.read<ThemeProvider>().setIsDark(response);
+    });
+
+    getUserService(email).then((response) {
+      final currentDate = DateTime.now();
+      final currentMonth = getCurrentMonth(currentDate);
+
+      if (response?.moves != null) {
+        final currentDataPassives =
+            extractMoves(response?.moves[currentMonth]['pasive']);
+        final currentDataActives =
+            extractMoves(response?.moves[currentMonth]['activo']);
+
+        context.read<FinanceProvider>().setActivos(currentDataActives);
+        context.read<FinanceProvider>().setPasivos(currentDataPassives);
+      }
+
+      Navigator.pushReplacementNamed(context, '/home');
     });
   }
 

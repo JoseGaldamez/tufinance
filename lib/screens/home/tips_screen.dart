@@ -11,14 +11,9 @@ class TipsScreen extends StatelessWidget {
         // Articulos de finanzas
         InkWell(
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Leer artículo (pendiente)"),
-              ),
-            );
+            Navigator.pushNamed(context, "/firstTip");
           },
           child: Card(
-            color: Colors.grey[50],
             child: Column(
               children: [
                 Image.network(
@@ -55,14 +50,9 @@ class TipsScreen extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Leer artículo (pendiente)"),
-              ),
-            );
+            Navigator.pushNamed(context, "/secondTip");
           },
           child: Card(
-            color: Colors.grey[50],
             child: Column(
               children: [
                 Image.network(
@@ -99,14 +89,9 @@ class TipsScreen extends StatelessWidget {
         ),
         InkWell(
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Leer artículo (pendiente)"),
-              ),
-            );
+            Navigator.pushNamed(context, "/thirdTip");
           },
           child: Card(
-            color: Colors.grey[50],
             child: Column(
               children: [
                 Image.network(

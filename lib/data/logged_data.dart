@@ -12,11 +12,28 @@ Future<UserModel?> getUserData() async {
     final String? password = prefs.getString('password');
 
     if (name != null && email != null && password != null) {
-      return UserModel(name: name, email: email, password: password);
+      return UserModel(
+          name: name, email: email, password: password, moves: null);
     }
   }
 
   return null;
+}
+
+Future<void> setDarkMode(bool mode) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isDark', mode);
+}
+
+Future<bool> getDarkMode() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool? isDark = prefs.getBool('isDark');
+
+  if (isDark == null) {
+    return false;
+  } else {
+    return isDark;
+  }
 }
 
 Future<void> setUserData(UserModel user) async {
